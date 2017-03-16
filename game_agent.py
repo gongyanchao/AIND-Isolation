@@ -44,14 +44,14 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
     # select one of the score methods from below to return
-    return heuristic_diff_score(game, player)
+    return heuristic_own_score_fixed_weight_2(game, player)
 
 def heuristic_diff_score(game, player):
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(own_moves - opp_moves)
 
-def heuristic_score_weight(game, player):
+def heuristic_score_var_weight(game, player):
     own_moves = len(game.get_legal_moves(player))
     return float(own_moves/game.move_count)
 
@@ -59,6 +59,28 @@ def heuristic_diff_score_with_count(game, player):
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
     return float(own_moves - opp_moves - game.move_count)
+def heuristic_oppononet_negtive_score(game, player):
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(-opp_moves)
+def heuristic_own_score_fixed_weight_1(game, player):
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves*2 - opp_moves)
+
+def heuristic_own_score_fixed_weight_2(game, player):
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves/2 - opp_moves)
+
+def heuristic_own_score_fixed_weight_3(game, player):
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves/3 - opp_moves)
+
+def heuristic_oppo_score_fixed_weight(game, player):
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves - 2*opp_moves)
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -161,7 +183,7 @@ class CustomPlayer:
                 search_depth = 1
                 while True:
                     score, best_move = search_method(game, search_depth)
-                    print("iter depth",search_depth)
+                    #print("iter depth",search_depth)
                     search_depth += 1
             else:
                 score, best_move = search_method(game, self.search_depth)
